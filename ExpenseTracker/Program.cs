@@ -143,8 +143,50 @@ while (isRunning)
 
 
         case "2":
-            Console.WriteLine("View summary selected.");
-            break;
+            {
+                Console.WriteLine();
+                Console.WriteLine("========== Expense Summary ==========");
+                Console.WriteLine($"Number of expenses: {expenseCount}");
+                Console.WriteLine($"Total spent: {BudgetRules.FormatCurrency(totalExpenses)}");
+                Console.WriteLine($"Highest single expense: {BudgetRules.FormatCurrency(highestExpense)}");
+
+                if (expenseCount == 0)
+                {
+                    Console.WriteLine("No expenses have been added yet.");
+                }
+                else
+                {
+                    decimal average = totalExpenses / expenseCount;
+                    Console.WriteLine($"Average expense: {BudgetRules.FormatCurrency(average)}");
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("----- Spending by Category -----");
+                Console.WriteLine($"Food: {BudgetRules.FormatCurrency(foodTotal)}");
+                Console.WriteLine($"Transport: {BudgetRules.FormatCurrency(transportTotal)}");
+                Console.WriteLine($"Utilities: {BudgetRules.FormatCurrency(utilitiesTotal)}");
+                Console.WriteLine($"Entertainment: {BudgetRules.FormatCurrency(entertainmentTotal)}");
+                Console.WriteLine($"Other: {BudgetRules.FormatCurrency(otherTotal)}");
+
+                if (budgetIsSet)
+                {
+                    decimal remaining = monthlyBudget - totalExpenses;
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Monthly budget: {BudgetRules.FormatCurrency(monthlyBudget)}");
+                    Console.WriteLine($"Remaining: {BudgetRules.FormatCurrency(remaining)}");
+                    Console.WriteLine($"Budget status: {BudgetRules.BudgetStatus(remaining, monthlyBudget)}");
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("No monthly budget has been set.");
+                }
+
+                Console.WriteLine("=====================================");
+                break;
+            }
+            
 
 
         case "3":
