@@ -81,9 +81,7 @@ while (isRunning)
                     Console.Write("Optional note (press Enter to skip): ");
                     string? noteInput = Console.ReadLine();
 
-                    string? note = string.IsNullOrWhiteSpace(noteInput)
-                        ? null
-                        : noteInput.Trim();
+                    string? note = string.IsNullOrWhiteSpace(noteInput) ? null : noteInput.Trim();
 
                     // Update the overall totals.
                     totalExpenses += amount;
@@ -120,7 +118,8 @@ while (isRunning)
 
                     Console.WriteLine();
                     Console.WriteLine("Expense added successfully!");
-                    Console.WriteLine($"Description: {description}");
+                    // Used range operator and Added the ^ operator
+                    Console.WriteLine($"Description: {FormatDescription(description)}");
                     Console.WriteLine($"Amount: {BudgetRules.FormatCurrency(amount)}");
                     Console.WriteLine($"Category: {category}");
                     Console.WriteLine($"Date: {expenseDate:yyyy-MM-dd}");
@@ -186,12 +185,26 @@ while (isRunning)
                 Console.WriteLine("=====================================");
                 break;
             }
-            
+
 
 
         case "3":
-            Console.WriteLine("Set monthly budget selected.");
-            break;
+            {
+                decimal newBudget = ReadPositiveAmount("Enter your monthly budget: $");
+
+                monthlyBudget = newBudget;
+                budgetIsSet = true;
+
+                decimal remaining = monthlyBudget - totalExpenses;
+
+                Console.WriteLine();
+                Console.WriteLine($"Monthly budget set to: {BudgetRules.FormatCurrency(monthlyBudget)}");
+                Console.WriteLine($"Amount spent: {BudgetRules.FormatCurrency(totalExpenses)}");
+                Console.WriteLine($"Remaining: {BudgetRules.FormatCurrency(remaining)}");
+                Console.WriteLine($"Budget status: {BudgetRules.BudgetStatus(remaining, monthlyBudget)}");
+
+                break;
+            }
 
         case "4":
             isRunning = false;
@@ -303,4 +316,12 @@ static DateOnly ReadExpenseDate()
     }
 }
 
+static string FormatDescription(string description)
+{
+    char lastCharacter = description[^1];
+
+    return description.Length > 30
+        ? description[..27] + "..."
+        : description;
+}
 

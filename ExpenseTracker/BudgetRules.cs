@@ -57,10 +57,11 @@ public static class BudgetRules
 
         return amount switch
         {
-            < 10 => "Micro",
-            < 50 => "Small",
-            < 200 => "Medium",
-            _ => "Large"
+            > 0 and < 10 => "Micro",
+            >= 10 and < 50 => "Small",
+            >= 50 and < 200 => "Medium",
+            >= 200 => "Large",
+            _ => "Unknown"
         };
     }
 
@@ -114,10 +115,8 @@ public static class BudgetRules
     /// Formats an amount as currency using the default "$" symbol.
     /// Implement this as an expression-bodied member that calls the overload.
     /// </summary>
-    public static string FormatCurrency(decimal amount)
-    {
-        return FormatCurrency(amount, "$");
-    }
+    public static string FormatCurrency(decimal amount) =>
+    FormatCurrency(amount, "$");
 
     /// <summary>
     /// Formats an amount as currency using the given symbol, e.g. "$62.40".
